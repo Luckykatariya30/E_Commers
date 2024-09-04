@@ -16,16 +16,29 @@ class ProductView(View):
   bottomwears = Product.objects.filter(category='BW')
   mobiles = Product.objects.filter(category='M')
   laptops = Product.objects.filter(category='L')
-  return render(request , 'app/home.html',{'topwears':topwears,'bottomwears':bottomwears,'mobiles':mobiles ,'laptops':laptops})
-
+  
+  if request.user.is_authenticated:
+   t_cart = Cart.objects.filter(user=request.user)
+   total_cart = len(t_cart)
+   user = str(request.user)
+   user_first_l = user[0]
+  else:
+   total_cart = ''
+   user_first_l=''
+ 
+  
+  return render(request , 'app/home.html',{'topwears':topwears,'bottomwears':bottomwears,'mobiles':mobiles ,'laptops':laptops,'total_cart':total_cart ,'user_first_letter':user_first_l})
+ 
 
 class ProductDetailView(View):
  def get(self,request,pk):
+  t_cart = Cart.objects.filter(user=request.user)
+  total_cart = len(t_cart)
   product = Product.objects.get(pk=pk)
   item_already =False
   if request.user.is_authenticated:
    item_already = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-  return render(request, 'app/productdetail.html' , {'product':product,'item_already_in_cart':item_already})
+  return render(request, 'app/productdetail.html' , {'product':product,'item_already_in_cart':item_already , 'total_cart':total_cart})
 
 @login_required
 def add_to_cart(request):
@@ -42,6 +55,7 @@ def add_to_cart(request):
   cart = Cart(user=user , product=product)
   cart.save()
   cart = Cart.objects.filter(user=user) 
+
  return redirect('/cart') 
 
 # def show_cart(request): 
@@ -51,6 +65,7 @@ def show_cart(request):
  if request.user.is_authenticated:
   user = request.user
   cart = Cart.objects.filter(user=user)
+  total_cart = len(cart)
   cart_product = [p for p in Cart.objects.all() if p.user == user]
   if cart_product:
    amount = 0.0
@@ -61,7 +76,7 @@ def show_cart(request):
     amount += temp_amount
     total_amount = amount + shipping_amount
     
-   return render(request, 'app/addtocart.html' , {'carts':cart,'amount':amount,'total':total_amount,'shipping':shipping_amount})
+   return render(request, 'app/addtocart.html' , {'carts':cart,'amount':amount,'total':total_amount,'shipping':shipping_amount ,'total_cart':total_cart})
   else:
    return render(request , 'app/emptycart.html')
   
@@ -213,8 +228,13 @@ class CustomerRegistrationView(View):
   if form.is_valid():
    messages.success(request,'Congratulations! Registered Successfully ')
    form.save()
-  return redirect('/registration')
+  return redirect('/accounts/login')
 
+def search_now(request):
+ if request.method == 'GET':
+  query = request.GET.get('anyone')
+  if query:
+   product = Product.objects.filter
 
 # def customerregistration(request):
 #  return render(request, 'app/customerregistration.html')
