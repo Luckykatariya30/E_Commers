@@ -59,8 +59,16 @@
           </li>
         </ul>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-warning" type="submit">L</button>
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="anyone">
+          <!-- {% if request.user.is_authenticated %} -->
+          <button class="btn btn-light" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg></button>
+            
+
+            <!-- {{user_first_letter|capfirst}} -->
+          
+          <!-- {% endif %} -->
         </form>
         <div>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -83,8 +91,10 @@
               </ul>
             </li>
             <li class="nav-item mx-2">
-              <a href="{% url 'show_cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart
+              <a href="{% url 'show_cart' %}" class="nav-link text-white"><span
+                  class="badge bg-danger">{{total_cart}}</span> Cart
               </a>
+
             </li>
             {% else %}
             <li class="nav-item mx-2">
@@ -104,7 +114,7 @@
   {% block main-content %} {% endblock main-content %}
 
   <!-- Start Footer -->
-  <footer class="container-fluid bg-dark text-center p-2 mt-5">
+  <footer class="container-fluid bg-dark text-center p-2  absolute fixed-bottom">
     <small class="text-white">Copyright &copy; 2024 || Designed By like_coding || </small>
     <img src="{% static 'app/images/payment.png' %}" alt="" srcset="" class="img-fluid" height="2px">
   </footer> <!-- End Footer -->
