@@ -234,7 +234,7 @@ def search_now(request):
  if request.method == 'GET':
   query = request.GET.get('anyone')
   if query:
-   product = Product.objects.filter
+   product = Product.objects.filter()
 
 # def customerregistration(request):
 #  return render(request, 'app/customerregistration.html')
