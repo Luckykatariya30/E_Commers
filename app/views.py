@@ -233,8 +233,57 @@ class CustomerRegistrationView(View):
 def search_now(request):
  if request.method == 'GET':
   query = request.GET.get('anyone')
+  query =query.lower()
+  list_of_brand = ['vivo','oppo','xieome','oneplus','hp','mac','leenova','lie','livies','livace','adidas','dell']
+  print(Product.objects.filter(brand = query))
+  if query == 'laptop'or query == 'laptops':
+   query = 'L'
+  elif query == 'mobile'or query == 'mobiles':
+   query = 'M'
+  elif query == 'bottom wear'or query == 'bottom wears':
+   query = 'BW'
+  elif query == 'top wear'or query == 'top wears':
+   query = 'TW'
+  elif query in list_of_brand:
+   product = Product.objects.filter(brand__icontains=query)
+   return render(request , 'app/search_bar.html',{'product':product})
+  else:
+   return render(request ,'app/out_of_stoke.html')
   if query:
-   product = Product.objects.filter()
+    product = Product.objects.filter(category__icontains=query)
+    return render(request , 'app/search_bar.html',{'product':product})
+ 
+   
+    #  if Product.objects.filter(category=query):
+    # if Product.objects.filter(category='M'):
+    #   product = Product.objects.filter(category='M')
+    # elif Product.objects.filter(category='BW'):
+    #   prpduct =Product.objects.filter(category='BW')
+    # elif Product.objects.filter(category='TW'):
+    #   prpduct =Product.objects.filter(category='TW')
+    # elif Product.objects.filter(category='L'):
+    #   prpduct =Product.objects.filter(category='L')
+    # else:
+    #  return redirect('/')
+  else:
+     return redirect('/')
+    
+     
+
+
+#    if data == None:
+#   bottomwear = Product.objects.filter(category='BW')
+#  elif data=='lie'or data=="livies":
+#   bottomwear = Product.objects.filter(category='BW').filter(brand = data)
+#  elif data == 'below':
+#   bottomwear = Product.objects.filter(category='BW').filter(discounted_price__lt=400)
+#  elif data == 'above':
+#   bottomwear = Product.objects.filter(category='BW').filter(discounted_price__gt=400)
+#  return render(request, 'app/bottomwears.html',{'bottomwears':bottomwear}) 
+    
+
+
+  
 
 # def customerregistration(request):
 #  return render(request, 'app/customerregistration.html')
