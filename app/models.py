@@ -55,10 +55,10 @@ class Customer(models.Model):
         return str(self.id)
     
 CATEGORY_CHOICES = (
-    ('M','Mobile'),
-    ('L','Laptop'),
-    ('TW','Top Wear'),
-    ('BW','Bottom Wear'),
+    ('Mobile','Mobile'),
+    ('Laptop','Laptop'),
+    ('Top Wear','Top Wear'),
+    ('Bottom Wear','Bottom Wear'),
     )
 
 class Product(models.Model):
@@ -68,7 +68,7 @@ class Product(models.Model):
     discounted_price = models.FloatField()
     description = models.TextField()
     brand = models.CharField(max_length=121)
-    category = models.CharField(choices=CATEGORY_CHOICES,max_length=2)
+    category = models.CharField(choices=CATEGORY_CHOICES,max_length=121)
     product_image = models.ImageField(upload_to='productimg')
     def __str__(self):
         return str(self.id)

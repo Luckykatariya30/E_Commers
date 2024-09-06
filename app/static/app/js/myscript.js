@@ -9,7 +9,7 @@ $('#slider1, #slider2, #slider3, #slider4').owlCarousel({
             autoplay: true,
         },
         600: {
-            items: 3,
+            items: 4,
             nav: true,
             autoplay: true,
         },
